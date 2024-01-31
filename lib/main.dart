@@ -12,19 +12,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   runApp(const SplashScreen());
-  // await Future.delayed(const Duration(seconds: 2));
+  bool? isLoggedIn = false;
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  // prefs.remove('isLoggedIn');
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (context) => SettingsProvider()),
-      ChangeNotifierProvider(
-          create: (context) =>
-              AuthProvider(isLoggedIn: prefs.getBool("isLoggedIn") ?? false))
-    ],
-    child: const MainApp(),
-  ));
+  isLoggedIn = await prefs.getBool("isLoggedIn");
+  print("Função Main(), verificado estado do login no armazenamento interno");
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => SettingsProvider()),
+        ChangeNotifierProvider(
+            create: (context) => AuthProvider(isLoggedIn: isLoggedIn ?? false))
+      ],
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatefulWidget {
@@ -55,11 +58,9 @@ class _MainAppState extends State<MainApp> {
     var home = Provider.of<AuthProvider>(context).isLoggedIn
         ? const HomePage()
         : const LoginPage();
-    print(home);
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: home,
+      home: LoginPage(),
       routes: {
         '/home': (context) => const HomePage(),
         '/login': (context) => const LoginPage(),

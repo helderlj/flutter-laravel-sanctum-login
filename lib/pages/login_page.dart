@@ -1,3 +1,4 @@
+import 'package:authentication_app_laravel_sanctum/pages/home_page.dart';
 import 'package:authentication_app_laravel_sanctum/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,14 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    var isLoggedIn = Provider.of<AuthProvider>(context).isLoggedIn;
+
+    print("isLoggedIn $isLoggedIn");
+
+    if (isLoggedIn) {
+      return HomePage();
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -77,5 +86,6 @@ class _LoginPageState extends State<LoginPage> {
   void submit() {
     Provider.of<AuthProvider>(context, listen: false)
         .login(credentials: {'email': _email, 'password': _password});
+    setState(() {});
   }
 }

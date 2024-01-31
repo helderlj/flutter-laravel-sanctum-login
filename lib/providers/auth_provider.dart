@@ -5,6 +5,7 @@ import 'package:dio/dio.dart' as dioPackage;
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:platform_device_id/platform_device_id.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../services/dio_service.dart';
 
 class AuthProvider extends ChangeNotifier {
@@ -22,9 +23,10 @@ class AuthProvider extends ChangeNotifier {
       data: jsonEncode(credentials?..addAll({'deviceId': deviceId})),
     );
     String token = json.decode(response.toString())['token'];
-    print("token obtido");
     await attempt(token);
     storeToken(token);
+    notifyListeners();
+    print("metodo login - token obtido da api externa");
   }
 
   Future attempt(String token) async {
@@ -37,41 +39,52 @@ class AuthProvider extends ChangeNotifier {
       );
       _user = User.fromJson(json.decode(response.toString()));
       _loggedIn = true;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool("isLoggedIn", true);
       notifyListeners();
-      print("Usuario recuperado");
+      print("metodo attempt - token ja emitido validado na api externa");
     } on Exception catch (e) {
       _loggedIn = false;
-      print(e.toString());
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool("isLoggedIn", false);
+      print("metodo attempt - exception");
     }
   }
 
   void logout() async {
     _loggedIn = false;
-    String token = await getToken();
-
+    notifyListeners();
+    String? token = await getToken();
     try {
       await dioService().delete('logout',
           data: {'deviceId': await getDeviceId()},
           options: dioPackage.Options(
             headers: {'Authorization': 'Bearer $token'},
           ));
+      print("metodo logout - token removido da api remota");
     } on Exception catch (e) {
-      print(e);
+      print("metodo logout - exception");
     }
     deleteToken();
-    notifyListeners();
   }
 
   void storeToken(String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool("isLoggedIn", true);
     await storage.write(key: 'auth-token', value: token);
   }
 
   Future getToken() async {
     return await storage.read(key: 'auth-token');
+    print("Token lido do armazenamento interno");
   }
 
   void deleteToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool("isLoggedIn", false);
     await storage.delete(key: 'auth-token');
+    notifyListeners();
+    print("Metodo deleteToken executado");
   }
 
   AuthProvider({isLoggedIn}) {

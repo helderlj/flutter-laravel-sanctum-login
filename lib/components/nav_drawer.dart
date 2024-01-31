@@ -1,3 +1,5 @@
+import 'package:authentication_app_laravel_sanctum/pages/categories_page.dart';
+import 'package:authentication_app_laravel_sanctum/pages/home_page.dart';
 import 'package:authentication_app_laravel_sanctum/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -35,7 +37,10 @@ class _NavDrawerState extends State<NavDrawer> {
                         title: const Text("Home"),
                         leading: const Icon(Icons.home),
                         onTap: () {
-                          Navigator.pushNamed(context, '/home');
+                          Navigator.pop(context);
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()));
                         },
                       ),
                       const ListTile(
@@ -49,7 +54,12 @@ class _NavDrawerState extends State<NavDrawer> {
                         title: const Text("Categorias"),
                         leading: const Icon(Icons.label),
                         onTap: () {
-                          Navigator.of(context).pushNamed('/categories');
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CategoriesPage(),
+                                  maintainState: true),
+                              (Route<dynamic> route) => false);
                         },
                       ),
                       const Divider(),
