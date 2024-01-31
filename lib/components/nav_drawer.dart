@@ -54,12 +54,10 @@ class _NavDrawerState extends State<NavDrawer> {
                         title: const Text("Categorias"),
                         leading: const Icon(Icons.label),
                         onTap: () {
-                          Navigator.pushAndRemoveUntil(
-                              context,
+                          Navigator.pop(context);
+                          Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                  builder: (context) => CategoriesPage(),
-                                  maintainState: true),
-                              (Route<dynamic> route) => false);
+                                  builder: (context) => CategoriesPage()));
                         },
                       ),
                       const Divider(),
@@ -67,11 +65,8 @@ class _NavDrawerState extends State<NavDrawer> {
                         title: const Text("Logout"),
                         leading: const Icon(Icons.logout),
                         onTap: () {
-                          // Navigator.pop(context);
-                          // Navigator.pushNamed(context, '/login');
                           Provider.of<AuthProvider>(context, listen: false)
                               .logout();
-                          // Navigator.pop(context);
                         },
                       )
                     ],
