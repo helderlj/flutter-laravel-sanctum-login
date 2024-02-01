@@ -6,11 +6,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-Setting settingFromJson(String str) => Setting.fromJson(json.decode(str));
+Settings settingFromJson(String str) => Settings.fromJson(json.decode(str));
 
-String settingToJson(Setting data) => json.encode(data.toJson());
+String settingToJson(Settings data) => json.encode(data.toJson());
 
-class Setting {
+class Settings {
   String mainLogo;
   String primaryLogo;
   String secondaryLogo;
@@ -33,7 +33,7 @@ class Setting {
     return Color(int.parse(buffer.toString(), radix: 16));
   }
 
-  Setting({
+  Settings({
     required this.mainLogo,
     required this.primaryLogo,
     required this.secondaryLogo,
@@ -41,7 +41,7 @@ class Setting {
     required this.secondaryColor,
   });
 
-  factory Setting.fromJson(Map<String, dynamic> json) => Setting(
+  factory Settings.fromJson(Map<String, dynamic> json) => Settings(
         mainLogo: json["main_logo"],
         primaryLogo: json["primary_logo"],
         secondaryLogo: json["secondary_logo"],

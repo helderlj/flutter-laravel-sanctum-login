@@ -1,4 +1,5 @@
 import 'package:authentication_app_laravel_sanctum/components/splash.dart';
+import 'package:authentication_app_laravel_sanctum/models/Setting.dart';
 import 'package:authentication_app_laravel_sanctum/pages/categories_page.dart';
 import 'package:authentication_app_laravel_sanctum/pages/home_page.dart';
 import 'package:authentication_app_laravel_sanctum/pages/login_page.dart';
@@ -17,6 +18,8 @@ void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   isLoggedIn = await prefs.getBool("isLoggedIn");
   print("Função Main(), verificado estado do login no armazenamento interno");
+
+  
 
   runApp(
     MultiProvider(
@@ -60,7 +63,7 @@ class _MainAppState extends State<MainApp> {
         : const LoginPage();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+      home: home,
       routes: {
         '/home': (context) => const HomePage(),
         '/login': (context) => const LoginPage(),

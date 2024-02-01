@@ -9,6 +9,9 @@ Dio dioService() {
         headers: {
           'accept': 'application/json',
           'content-type': 'application/json',
+        },
+        validateStatus: (status) {
+          return status! < 500;
         }),
   );
 

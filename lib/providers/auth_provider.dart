@@ -1,3 +1,9 @@
+/// Provides authentication functionality for an app. Manages user login state, authentication tokens,
+/// user information from a server, and persistence of auth tokens. Includes methods for login, logout,
+/// retrieving auth tokens, validating tokens, and getting user info. Notifies listeners on auth state changes.
+/// Provides authentication functionality. Manages user login state, tokens,
+/// and communication with authentication server. Exposes login(), logout(),
+/// and user info. Handles persistence of auth token.
 import 'dart:convert';
 
 import 'package:authentication_app_laravel_sanctum/models/User.dart';
@@ -8,25 +14,53 @@ import 'package:platform_device_id/platform_device_id.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/dio_service.dart';
 
+/// Logs the user out by setting [_loggedIn] to false,
+/// deleting the token, and notifying listeners.
+
 class AuthProvider extends ChangeNotifier {
   late User _user;
   bool _loggedIn = false;
   bool get isLoggedIn => _loggedIn;
   User get user => _user;
   final storage = new FlutterSecureStorage();
+  String? authError;
 
   Future login({Map? credentials}) async {
     String deviceId = await getDeviceId();
     print(deviceId);
-    dioPackage.Response response = await dioService().post(
-      'login',
-      data: jsonEncode(credentials?..addAll({'deviceId': deviceId})),
-    );
-    String token = json.decode(response.toString())['token'];
-    await attempt(token);
-    storeToken(token);
-    notifyListeners();
-    print("metodo login - token obtido da api externa");
+
+    try {
+      dioPackage.Response response = await dioService().post(
+        'login',
+        data: jsonEncode(
+          credentials?..addAll({'deviceId': deviceId}),
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        String token = json.decode(response.toString())['token'];
+        await attempt(token);
+        storeToken(token);
+        authError = null;
+        notifyListeners();
+        print("metodo login - token obtido da api externa");
+      } else {
+        print(response.statusCode.toString());
+        // print(response.data.toString());
+        authError = jsonDecode(response.data)['message'];
+        notifyListeners();
+      }
+    } on dioPackage.DioException catch (e) {
+      if (e.response != null) {
+        print(e.response?.data.toString());
+        // print(e.response?.headers.toString());
+        // print(e.response?.requestOptions.toString());
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.requestOptions);
+        print(e.message);
+      }
+    }
   }
 
   Future attempt(String token) async {
@@ -43,7 +77,7 @@ class AuthProvider extends ChangeNotifier {
       await prefs.setBool("isLoggedIn", true);
       notifyListeners();
       print("metodo attempt - token ja emitido validado na api externa");
-    } on Exception catch (e) {
+    } on dioPackage.DioException catch (e) {
       _loggedIn = false;
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool("isLoggedIn", false);

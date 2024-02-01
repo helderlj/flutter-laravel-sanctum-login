@@ -19,7 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     var isLoggedIn = Provider.of<AuthProvider>(context).isLoggedIn;
-
+    String? error = Provider.of<AuthProvider>(context).authError;
     print("isLoggedIn $isLoggedIn");
 
     if (isLoggedIn) {
@@ -63,7 +63,12 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     onSaved: (newValue) => _password = newValue,
                   ),
-                  SizedBox(height: 25),
+                  SizedBox(height: 10),
+                  Text(
+                    error ?? "",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  SizedBox(height: 10),
                   ElevatedButton(
                       onPressed: () {
                         // Provider.of<AuthProvider>(context, listen: false)
