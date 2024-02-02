@@ -13,7 +13,10 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   http: ^1.2.0
   lottie: ^3.0.0
-  platform_device_id: ^1.0.1
+  platform_device_id:
+    git:
+      url: git@github.com:helderlj/platform_device_id.git
+      path: platform_device_id
   provider: ^6.1.1
   shared_preferences: ^2.2.2
 

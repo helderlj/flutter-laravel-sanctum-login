@@ -4,10 +4,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsProvider extends ChangeNotifier {
   late Settings _settings;
-  SharedPreferences prefs = SharedPreferences.getInstance() as SharedPreferences;
+  SharedPreferences prefs =
+      SharedPreferences.getInstance() as SharedPreferences;
 
-  bool inited = false;
+  bool dbInitialized = false;
 
-
-  
+  SettingsProvider() {
+    print("SettingsProvider()");
+    // prefs.setBool("dbInitialized", true);
+  }
 }

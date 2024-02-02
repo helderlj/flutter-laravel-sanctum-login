@@ -19,8 +19,6 @@ void main() async {
   isLoggedIn = await prefs.getBool("isLoggedIn");
   print("Função Main(), verificado estado do login no armazenamento interno");
 
-  
-
   runApp(
     MultiProvider(
       providers: [
@@ -41,7 +39,7 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  final storage = new FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
 
   void _attemptAuthFromStoredToken() async {
     String? token = await storage.read(key: 'auth-token');

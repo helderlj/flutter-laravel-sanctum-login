@@ -44,9 +44,8 @@ class _LoginPageState extends State<LoginPage> {
             child: Scrollbar(
               child: Column(
                 children: [
-                  FlutterLogo(
-                    size: 200,
-                  ),
+                  Container(
+                      child: Image.asset('assets/main-logo.png'), height: 250),
                   TextFormField(
                     initialValue: "admin@admin.com",
                     decoration: const InputDecoration(
