@@ -1,5 +1,8 @@
+import 'package:authentication_app_laravel_sanctum/constants/default_settings.dart';
+import 'package:authentication_app_laravel_sanctum/models/Setting.dart';
 import 'package:authentication_app_laravel_sanctum/pages/home_page.dart';
 import 'package:authentication_app_laravel_sanctum/providers/auth_provider.dart';
+import 'package:authentication_app_laravel_sanctum/providers/settings_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -37,6 +40,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     var isLoggedIn = Provider.of<AuthProvider>(context).isLoggedIn;
     String? error = Provider.of<AuthProvider>(context).authError;
+    Settings settings = Provider.of<SettingsProvider>(context).settings;
+
     print("isLoggedIn $isLoggedIn");
 
     if (isLoggedIn) {
@@ -48,10 +53,10 @@ class _LoginPageState extends State<LoginPage> {
         title: Text(
           "L O G I N",
           style: TextStyle(
-            color: Colors.purple[100],
+            color: settings.secColor,
           ),
         ),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: settings.primColor,
       ),
       body: Center(
         child: Form(
@@ -62,12 +67,21 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 children: [
                   Container(
-                      child: Image.asset('assets/main-logo.png'), height: 250),
+                      child: Image.network(
+                        settings.mainLogo,
+                        errorBuilder: (context, error, stackTrace) =>
+                            Image.asset(mainLogo),
+                      ),
+                      height: 250),
                   TextFormField(
                     initialValue: "admin@admin.com",
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       label: Text("Email"),
                       hintText: "email@empresa.com",
+                      labelStyle: TextStyle(color: settings.primColor),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: settings.primColor),
+                      ),
                     ),
                     onSaved: (newValue) => _email = newValue,
                     validator: (value) {
@@ -83,8 +97,12 @@ class _LoginPageState extends State<LoginPage> {
                   TextFormField(
                     initialValue: "1234",
                     obscureText: true,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       label: Text("Senha"),
+                      labelStyle: TextStyle(color: settings.primColor),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: settings.primColor),
+                      ),
                     ),
                     onSaved: (newValue) => _password = newValue,
                     validator: (value) {
@@ -101,6 +119,10 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(height: 10),
                   ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: settings.primColor,
+                        foregroundColor: settings.secColor,
+                      ),
                       onPressed: () {
                         _formKey.currentState?.save();
                         submit();

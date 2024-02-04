@@ -11,6 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_secure_storage: ^9.0.0
+  google_fonts: ^6.1.0
   http: ^1.2.0
   lottie: ^3.0.0
   platform_device_id:

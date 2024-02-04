@@ -109,8 +109,8 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future getToken() async {
-    return await storage.read(key: 'auth-token');
     print("Token lido do armazenamento interno");
+    return await storage.read(key: 'auth-token');
   }
 
   void deleteToken() async {

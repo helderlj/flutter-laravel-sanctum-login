@@ -9,7 +9,11 @@ class CategoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(category.title),
+        title: Text(category.title,
+            style: TextStyle(
+              color: Theme.of(context).secondaryHeaderColor,
+            )),
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Container(
           height: 200,

@@ -24,10 +24,17 @@ class _NavDrawerState extends State<NavDrawer> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 UserAccountsDrawerHeader(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                  ),
                   currentAccountPictureSize: const Size(50, 50),
                   currentAccountPicture: const FlutterLogo(),
-                  accountEmail: Text(auth.user.email),
-                  accountName: Text(auth.user.name),
+                  accountEmail: Text(auth.user.email,
+                      style: TextStyle(
+                          color: Theme.of(context).secondaryHeaderColor)),
+                  accountName: Text(auth.user.name,
+                      style: TextStyle(
+                          color: Theme.of(context).secondaryHeaderColor)),
                 ),
                 Expanded(
                   child: Column(
@@ -35,7 +42,8 @@ class _NavDrawerState extends State<NavDrawer> {
                     children: [
                       ListTile(
                         title: const Text("Home"),
-                        leading: const Icon(Icons.home),
+                        leading: Icon(Icons.home,
+                            color: Theme.of(context).primaryColor),
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.of(context).pushReplacement(
@@ -43,16 +51,21 @@ class _NavDrawerState extends State<NavDrawer> {
                                   builder: (context) => HomePage()));
                         },
                       ),
-                      const ListTile(
+                      ListTile(
                         title: Text("Playlists"),
-                        leading: Icon(Icons.list),
+                        leading: Icon(Icons.list,
+                            color: Theme.of(context).primaryColor),
                       ),
-                      const ListTile(
+                      ListTile(
                           title: Text("Albums"),
-                          leading: Icon(Icons.music_note_outlined)),
+                          leading: Icon(
+                            Icons.music_note_outlined,
+                            color: Theme.of(context).primaryColor,
+                          )),
                       ListTile(
                         title: const Text("Categorias"),
-                        leading: const Icon(Icons.label),
+                        leading: Icon(Icons.label,
+                            color: Theme.of(context).primaryColor),
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.of(context).pushReplacement(
@@ -63,7 +76,8 @@ class _NavDrawerState extends State<NavDrawer> {
                       const Divider(),
                       ListTile(
                         title: const Text("Logout"),
-                        leading: const Icon(Icons.logout),
+                        leading: Icon(Icons.logout,
+                            color: Theme.of(context).primaryColor),
                         onTap: () {
                           Provider.of<AuthProvider>(context, listen: false)
                               .logout();

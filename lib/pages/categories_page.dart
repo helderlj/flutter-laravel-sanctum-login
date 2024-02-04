@@ -39,9 +39,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
         appBar: AppBar(
           title: Text(
             "C A T E G O R I A S",
-            style: TextStyle(color: Colors.purple[100]),
+            style: TextStyle(color: Theme.of(context).secondaryHeaderColor),
           ),
-          backgroundColor: Colors.deepPurple,
+          backgroundColor: Theme.of(context).primaryColor,
         ),
         drawer: const NavDrawer(),
         body: RefreshIndicator(

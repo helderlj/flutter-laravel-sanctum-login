@@ -1,6 +1,7 @@
 import 'package:authentication_app_laravel_sanctum/components/nav_drawer.dart';
 import 'package:authentication_app_laravel_sanctum/pages/login_page.dart';
 import 'package:authentication_app_laravel_sanctum/providers/auth_provider.dart';
+import 'package:authentication_app_laravel_sanctum/providers/settings_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var isLoggedIn = Provider.of<AuthProvider>(context).isLoggedIn;
 
+    var settings = Provider.of<SettingsProvider>(context).settings;
+
     if (!isLoggedIn) {
       return LoginPage();
     }
@@ -25,20 +28,12 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(
           "H O M E",
-          style: TextStyle(color: Colors.purple[100]),
+          style: TextStyle(color: Theme.of(context).secondaryHeaderColor),
         ),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Center(
-        child: Consumer<AuthProvider>(
-          builder: (context, value, child) {
-            if (value.isLoggedIn) {
-              return Text("Logado");
-            } else {
-              return Text("Deslogado");
-            }
-          },
-        ),
+        child: Image.network(settings.mainLogo),
       ),
     );
   }

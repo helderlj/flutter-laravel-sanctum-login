@@ -1,10 +1,11 @@
+import 'package:authentication_app_laravel_sanctum/constants/default_settings.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 Dio dioService() {
   var dio = Dio(
     BaseOptions(
-        baseUrl: 'https://spotiphis.graphis.dev.br/api/',
+        baseUrl: baseUrl,
         responseType: ResponseType.plain,
         headers: {
           'accept': 'application/json',
