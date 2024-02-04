@@ -1,5 +1,4 @@
 import 'package:authentication_app_laravel_sanctum/components/splash.dart';
-import 'package:authentication_app_laravel_sanctum/models/Setting.dart';
 import 'package:authentication_app_laravel_sanctum/pages/categories_page.dart';
 import 'package:authentication_app_laravel_sanctum/pages/home_page.dart';
 import 'package:authentication_app_laravel_sanctum/pages/login_page.dart';
@@ -16,7 +15,7 @@ void main() async {
   bool? isLoggedIn = false;
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  isLoggedIn = await prefs.getBool("isLoggedIn");
+  isLoggedIn = prefs.getBool("isLoggedIn");
   print("Função Main(), verificado estado do login no armazenamento interno");
 
   runApp(
@@ -43,8 +42,10 @@ class _MainAppState extends State<MainApp> {
 
   void _attemptAuthFromStoredToken() async {
     String? token = await storage.read(key: 'auth-token');
-    if (token != null) {
-      Provider.of<AuthProvider>(context, listen: false).attempt(token);
+    if (mounted) {
+      if (token != null) {
+        Provider.of<AuthProvider>(context, listen: false).attempt(token);
+      }
     }
   }
 

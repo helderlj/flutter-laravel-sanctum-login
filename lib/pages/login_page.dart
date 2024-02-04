@@ -17,6 +17,23 @@ class _LoginPageState extends State<LoginPage> {
   String? _password;
 
   @override
+
+  /// Builds the login page UI.
+  ///
+  /// Returns a [Scaffold] with the login form if the user is not logged in yet.
+  /// Checks [AuthProvider.isLoggedIn] to determine login state.
+  /// Shows login error from [AuthProvider.authError] if available.
+  /// Saves entered email and password via [_email] and [_password] state.
+  /// Calls [submit] method on form submit to login.
+  /// Navigates to [HomePage] if login succeeds.
+  /// Builds the login page UI.
+  ///
+  /// Returns a [Scaffold] with the login form if the user is not logged in yet.
+  /// Checks [AuthProvider.isLoggedIn] to determine login state.
+  /// Shows login error from [AuthProvider.authError] if available.
+  /// Saves entered email and password via [_email] and [_password] state.
+  /// Calls [submit] method on form submit to login.
+  /// Navigates to [HomePage] if login succeeds.
   Widget build(BuildContext context) {
     var isLoggedIn = Provider.of<AuthProvider>(context).isLoggedIn;
     String? error = Provider.of<AuthProvider>(context).authError;
@@ -53,6 +70,15 @@ class _LoginPageState extends State<LoginPage> {
                       hintText: "email@empresa.com",
                     ),
                     onSaved: (newValue) => _email = newValue,
+                    validator: (value) {
+                      String pattern =
+                          r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}';
+                      RegExp regex = new RegExp(pattern);
+                      if (!regex.hasMatch(value!)) {
+                        return 'Insira um email válido';
+                      }
+                      return null;
+                    },
                   ),
                   TextFormField(
                     initialValue: "1234",
@@ -61,6 +87,12 @@ class _LoginPageState extends State<LoginPage> {
                       label: Text("Senha"),
                     ),
                     onSaved: (newValue) => _password = newValue,
+                    validator: (value) {
+                      if (value!.length < 5) {
+                        return 'A senha precisa ter pelo menos 5 caracteres';
+                      }
+                      return null;
+                    },
                   ),
                   SizedBox(height: 10),
                   Text(
@@ -70,10 +102,6 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(height: 10),
                   ElevatedButton(
                       onPressed: () {
-                        // Provider.of<AuthProvider>(context, listen: false)
-                        //     .attemptToLogin();
-                        // Navigator.pop(context);
-                        // Navigator.pushNamed(context, '/home');
                         _formKey.currentState?.save();
                         submit();
                       },
