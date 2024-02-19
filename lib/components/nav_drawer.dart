@@ -52,12 +52,18 @@ class _NavDrawerState extends State<NavDrawer> {
                         },
                       ),
                       ListTile(
-                        title: Text("Playlists"),
+                        title: Text(
+                          "Playlists",
+                          style: TextStyle(color: Colors.red),
+                        ),
                         leading: Icon(Icons.list,
                             color: Theme.of(context).primaryColor),
                       ),
                       ListTile(
-                          title: Text("Albums"),
+                          title: Text(
+                            "Albums",
+                            style: TextStyle(color: Colors.red),
+                          ),
                           leading: Icon(
                             Icons.music_note_outlined,
                             color: Theme.of(context).primaryColor,

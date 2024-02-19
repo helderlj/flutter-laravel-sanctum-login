@@ -61,7 +61,10 @@ class _CategoriesPageState extends State<CategoriesPage> {
                     itemBuilder: (context, index) {
                       Category category = snapshot.data![index];
                       return ListTile(
-                        leading: Image.network(snapshot.data![index].coverPath),
+                        leading: Hero(
+                          tag: category.id,
+                          child: Image.network(snapshot.data![index].coverPath),
+                        ),
                         title: Text(snapshot.data![index].title),
                         contentPadding: EdgeInsets.all(10),
                         onTap: () {
@@ -87,17 +90,23 @@ class _CategoriesPageState extends State<CategoriesPage> {
         ),
       );
     } else {
+      // TODO - Mudar isso para um componente reutilizavel
       return Scaffold(
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Voce foi deslogado, clique abaixo para se reautenticar"),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                    "Voce foi deslogado, clique abaixo para se re-autenticar"),
+              ),
               ElevatedButton(
-                  onPressed: () {
-                    redirect();
-                  },
-                  child: Icon(Icons.keyboard_return))
+                onPressed: () {
+                  redirect();
+                },
+                child: Icon(Icons.keyboard_return),
+              )
             ],
           ),
         ),

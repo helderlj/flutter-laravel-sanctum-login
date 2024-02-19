@@ -16,9 +16,13 @@ class CategoryPage extends StatelessWidget {
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Container(
-          height: 200,
+          width: double.infinity,
+          padding: EdgeInsets.all(10.0),
           child: Center(
-            child: Image.network(category.coverPath),
+            child: Hero(
+              tag: category.id,
+              child: Image.network(category.coverPath),
+            ),
           )),
     );
   }

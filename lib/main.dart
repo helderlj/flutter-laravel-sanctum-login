@@ -22,6 +22,13 @@ void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   isLoggedIn = prefs.getBool("isLoggedIn");
 
+  var response = await dioService().get('settings');
+  if (response.statusCode == 200) {
+    Settings settings = Settings.fromJson(json.decode(response.toString()));
+    print(json.encode(settings.mainLogo.toString()));
+    prefs.setString('settings', json.encode(settings.toJson()));
+  }
+
   Settings settings =
       Settings.fromJson(json.decode(prefs.getString("settings") ?? "{}"));
 
