@@ -7,24 +7,25 @@ environment:
   sdk: '>=3.2.3 <4.0.0'
 
 dependencies:
-  dio: ^5.4.0
+  dio: 
   flutter:
     sdk: flutter
-  flutter_secure_storage: ^9.0.0
-  google_fonts: ^6.1.0
-  http: ^1.2.0
-  lottie: ^3.0.0
+  flutter_secure_storage: 
+  google_fonts: 
+  http: 
+  lottie: 
   platform_device_id:
     git:
-      url: git@github.com:helderlj/platform_device_id.git
+      url: git@github.com:mwothman/platform_device_id.git
       path: platform_device_id
-  provider: ^6.1.1
-  shared_preferences: ^2.2.2
+  provider: 
+  shared_preferences: 
 
 dev_dependencies:
-  flutter_lints: ^2.0.0
+  flutter_lints: 
   flutter_test:
     sdk: flutter
+
 
 flutter:
   uses-material-design: true
